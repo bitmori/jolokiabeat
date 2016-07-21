@@ -14,6 +14,7 @@ type Server struct {
 	Username string
 	Password string
 	Port     string
+	Type     string
 }
 
 // Metric -> struct of jmx metric
@@ -29,6 +30,7 @@ type Metric struct {
 type Jok struct {
 	Context string
 	Mode    string
+	Type    string
 	Servers []Server
 	Metrics []Metric
 	Proxy   Server

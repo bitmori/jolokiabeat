@@ -49,9 +49,17 @@ func (ego *Jolokiabeat) CollectData(j Jok, s Server) error {
 		}
 	}
 
+	typ := "jolokia"
+
+	if j.Type != "" {
+		typ = j.Type
+	} else if s.Type != "" {
+		typ = s.Type
+	}
+
 	event := common.MapStr{
 		"@timestamp": common.Time(time.Now()),
-		"type":       "jolokia",
+		"type":       typ,
 		"jolokia": common.MapStr{
 			"context": j.Context,
 			"host":    s.Host,
