@@ -6,8 +6,8 @@
 /jolokiabeat.test
 *.pyc
 
-jolokiabeat
-jolokiabeat_linux_amd64
+/jolokiabeat_linux_amd64
 
 /vendor
 /logs
+/jolokiabeat_linux_amd64
