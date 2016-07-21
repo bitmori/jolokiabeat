@@ -1,0 +1,6 @@
+package: github.com/neonmori/jolokiabeat
+import:
+- package: github.com/elastic/beats
+  vcs: git
+  repo: git@github.com:elastic/beats.git
+- package: github.com/naoina/toml

@@ -1,0 +1,13 @@
+# -javaagent:/data/jolokia/jolikia-jvm-1.3.3-agent.jar=port=9777,host=*,agentContext=kafka_broker_10
+[[jolokia]]
+    context = "/kafka_broker_10/read"
+
+    [[jolokia.servers]]
+        name = "kafka_broker_10"
+        host = "sym-es8-dev-ause1-aha1"
+        port = "9777"
+
+    [[jolokia.metrics]]
+        name = "heap_memory_usage"
+        mbean  = "java.lang:type=Memory"
+        attribute = "HeapMemoryUsage"

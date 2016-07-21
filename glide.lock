@@ -1,0 +1,99 @@
+hash: 9dfe26a44228cccdf4c6fabbcaf056c377f965008dfbe572e4963e516c1d1c2a
+updated: 2016-07-20T15:32:53.928863115-07:00
+imports:
+- name: github.com/davecgh/go-spew
+  version: 5215b55f46b2b919f50a1df0eaa5886afe4e3b3d
+  subpackages:
+  - spew
+- name: github.com/eapache/go-resiliency
+  version: b86b1ec0dd4209a588dc1285cdd471e73525c0b3
+  subpackages:
+  - breaker
+- name: github.com/eapache/queue
+  version: ded5959c0d4e360646dc9e9908cff48666781367
+- name: github.com/elastic/beats
+  version: 8cb7193dae86cf328329cff4ad17a4eaf12efa5a
+  repo: git@github.com:elastic/beats.git
+  vcs: git
+  subpackages:
+  - libbeat/beat
+  - libbeat/common
+  - libbeat/logp
+  - libbeat/publisher
+  - libbeat/cfgfile
+  - libbeat/paths
+  - libbeat/processors
+  - libbeat/processors/actions
+  - libbeat/service
+  - libbeat/common/op
+  - libbeat/outputs
+  - libbeat/outputs/console
+  - libbeat/outputs/elasticsearch
+  - libbeat/outputs/fileout
+  - libbeat/outputs/kafka
+  - libbeat/outputs/logstash
+  - libbeat/outputs/redis
+  - libbeat/common/streambuf
+  - libbeat/outputs/mode
+  - libbeat/outputs/mode/modeutil
+  - libbeat/outputs/transport
+  - libbeat/outputs/mode/lb
+  - libbeat/outputs/mode/single
+- name: github.com/elastic/go-lumber
+  version: 616041e345fc33c97bc0eb0fa6b388aa07bca3e1
+  subpackages:
+  - lj
+  - log
+  - client/v2
+  - server/internal
+  - server/v2
+  - protocol/v2
+- name: github.com/elastic/go-ucfg
+  version: 2edcfd9add7b02513a1f44f4158560f353588d4c
+  subpackages:
+  - cfgutil
+  - flag
+  - yaml
+  - json
+- name: github.com/garyburd/redigo
+  version: 8873b2f1995f59d4bcdd2b0dc9858e2cb9bf0c13
+  subpackages:
+  - redis
+  - internal
+- name: github.com/golang/snappy
+  version: d9eb7a3d35ec988b8585d4a0068e462c27d28380
+- name: github.com/klauspost/compress
+  version: 006acde2c5d283d2f8b8aa03d8f0cd2891c680cf
+  subpackages:
+  - zlib
+  - flate
+- name: github.com/klauspost/cpuid
+  version: 09cded8978dc9e80714c4d85b0322337b0a1e5e0
+- name: github.com/klauspost/crc32
+  version: 19b0b332c9e4516a6370a0456e6182c3b5036720
+- name: github.com/naoina/go-stringutil
+  version: 6b638e95a32d0c1131db0e7fe83775cbea4a0d0b
+- name: github.com/naoina/toml
+  version: 751171607256bb66e64c9f0220c00662420c38e9
+  subpackages:
+  - ast
+- name: github.com/nranchev/go-libGeoIP
+  version: c78e8bd2dd3599feb21fd30886043979e82fe948
+- name: github.com/satori/go.uuid
+  version: 879c5887cd475cd7864858769793b2ceb0d44feb
+- name: github.com/Shopify/sarama
+  version: 38d579a708d2f87dd4e35342241048e361d1e66a
+- name: golang.org/x/net
+  version: d58ca6618b994150e624f6888d871f4709db51a0
+  subpackages:
+  - proxy
+  - publicsuffix
+- name: golang.org/x/sys
+  version: 62bee037599929a6e9146f29d10dd5208c43507d
+  subpackages:
+  - windows/svc
+  - windows/svc/debug
+  - windows
+- name: gopkg.in/yaml.v2
+  version: a83829b6f1293c91addabc89d0571c246397bbf4
+testImports: []
