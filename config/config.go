@@ -1,18 +1,42 @@
-// Config is put into a different package to prevent cyclic imports in case
-// it is needed in several locations
-
 package config
 
 // Config -> config structure
 type Config struct {
-	ConfigDir string `yaml:"config_dir"`
-	Period    string `yaml:"period"`
+	Jolokiabeat JolokiabeatConfig
+}
+
+// JolokiabeatConfig -> beat config
+type JolokiabeatConfig struct {
+	ConfigDir       string `config:"config_dir"`
+	Period          string `config:"period"`
+	FieldName       string `config:"metric_field_name"`
+	MetricUnderRoot bool   `config:"metric_under_root"`
 }
 
 var (
 	// DefaultConfig -> default values
 	DefaultConfig = Config{
-		ConfigDir: "jolokiabeat.d",
-		Period:    "10s",
+		Jolokiabeat: JolokiabeatConfig{
+			ConfigDir:       "jolokiabeat.d",
+			Period:          "10s",
+			FieldName:       "bean",
+			MetricUnderRoot: false,
+		},
 	}
 )
+
+// CheckConfig -> make sure the default value is loaded
+func (config *Config) CheckConfig() {
+	if config.Jolokiabeat.ConfigDir == "" {
+		config.Jolokiabeat.ConfigDir = DefaultConfig.Jolokiabeat.ConfigDir
+	}
+
+	if config.Jolokiabeat.FieldName == "" {
+		config.Jolokiabeat.FieldName = DefaultConfig.Jolokiabeat.FieldName
+	}
+
+	if config.Jolokiabeat.Period == "" {
+		config.Jolokiabeat.Period = DefaultConfig.Jolokiabeat.Period
+
+	}
+}

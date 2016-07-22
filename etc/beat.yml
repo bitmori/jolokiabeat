@@ -4,4 +4,7 @@
 
 jolokiabeat:
   # Defines how often an event is sent to the output
-  period: 1s
+  period: 10s
+  metric_under_root: false
+  metric_field_name: jolokia
+  config_dir: jolokiabeat.d

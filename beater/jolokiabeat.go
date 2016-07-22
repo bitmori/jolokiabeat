@@ -6,42 +6,55 @@ import (
 	"time"
 
 	"github.com/elastic/beats/libbeat/beat"
+	"github.com/elastic/beats/libbeat/cfgfile"
 	"github.com/elastic/beats/libbeat/common"
 	"github.com/elastic/beats/libbeat/logp"
 	"github.com/elastic/beats/libbeat/publisher"
 
-	"github.com/neonmori/jolokiabeat/config"
+	jConfig "github.com/neonmori/jolokiabeat/config"
 )
+
+const selector = "Jolokiabeat"
 
 // Jolokiabeat collects JMX info reported by jolokia
 type Jolokiabeat struct {
-	done      chan struct{}
-	config    *config.Config
-	jolokia   JolokiaToml
-	publisher publisher.Client
-	requester *http.Client
-	period    time.Duration
+	done            chan struct{}
+	config          jConfig.Config
+	jolokia         JolokiaToml
+	publisher       publisher.Client
+	requester       *http.Client
+	period          time.Duration
+	metricUnderRoot bool
+	metricFieldName string
 }
 
 // New -> Creates beater
 func New(b *beat.Beat, cfg *common.Config) (beat.Beater, error) {
-	config := config.DefaultConfig
+	config := jConfig.Config{}
+	if err := cfgfile.Read(&config, ""); err != nil {
+		return nil, err
+	}
 	if err := cfg.Unpack(&config); err != nil {
 		return nil, fmt.Errorf("Error reading config file: %v", err)
 	}
 
+	config.CheckConfig()
+
+	logp.Debug(selector, "%v", config)
 	var jolokia JolokiaToml
-	if err := jolokia.LoadDirectory(config.ConfigDir); err != nil {
+	if err := jolokia.LoadDirectory(config.Jolokiabeat.ConfigDir); err != nil {
 		return nil, fmt.Errorf("Error loading jolokia configs: %v", err)
 	}
 
 	ego := &Jolokiabeat{
-		done:   make(chan struct{}),
-		config: &config,
+		metricFieldName: config.Jolokiabeat.FieldName,
+		metricUnderRoot: config.Jolokiabeat.MetricUnderRoot,
+		done:            make(chan struct{}),
+		config:          config,
 	}
 	ego.jolokia = jolokia
 	var err error
-	ego.period, err = time.ParseDuration(config.Period)
+	ego.period, err = time.ParseDuration(config.Jolokiabeat.Period)
 	if err != nil {
 		return nil, err
 	}

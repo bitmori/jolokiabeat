@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/elastic/beats/libbeat/common"
+	"github.com/elastic/beats/libbeat/logp"
 )
 
 // CollectData -> get data from jolokia
@@ -60,16 +61,18 @@ func (ego *Jolokiabeat) CollectData(j Jok, s Server) error {
 	event := common.MapStr{
 		"@timestamp": common.Time(time.Now()),
 		"type":       typ,
-		"jolokia": common.MapStr{
-			"context": j.Context,
-			"host":    s.Host,
-			"port":    s.Port,
-			"server":  s.Name,
-			"bean":    fields,
-		},
+		"context":    j.Context,
+		"host":       s.Host,
+		"port":       s.Port,
+		"server":     s.Name,
 	}
-
-	ego.publisher.PublishEvent(event)
+	if ego.metricUnderRoot {
+		logp.Debug(selector, "metricUnderRoot = %d", ego.metricUnderRoot)
+		ego.publisher.PublishEvent(common.MapStrUnion(event, fields))
+	} else {
+		event[ego.metricFieldName] = fields
+		ego.publisher.PublishEvent(event)
+	}
 	return nil
 }
 

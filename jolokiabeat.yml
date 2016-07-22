@@ -4,7 +4,10 @@
 
 jolokiabeat:
   # Defines how often an event is sent to the output
-  period: 10s
+  # period: 10s
+  metric_under_root: true
+  # metric_field_name: jolokia
+  config_dir: jolokiabeat.d
 
 #================================ General =====================================
 
@@ -27,9 +30,9 @@ jolokiabeat:
 # Multiple outputs may be used.
 
 #-------------------------- Elasticsearch output ------------------------------
-# output.elasticsearch:
-#   # Array of hosts to connect to.
-#   hosts: ["localhost:9200"]
+output.elasticsearch:
+  # Array of hosts to connect to.
+  hosts: ["localhost:9200"]
 
   # Optional protocol and basic auth credentials.
   #protocol: "https"
@@ -61,6 +64,3 @@ jolokiabeat:
 # To enable all selectors use ["*"]. Examples of other selectors are "beat",
 # "publish", "service".
 #logging.selectors: ["*"]
-
-output.console:
-    pretty: true
