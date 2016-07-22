@@ -21,11 +21,24 @@ func (ego *Jolokiabeat) CollectData(j Jok, s Server) error {
 		return fmt.Errorf("Error when parsing server url: %v", err)
 	}
 
+	if s.Username != "" || s.Password != "" {
+		serverURL.User = url.UserPassword(s.Username, s.Password)
+	}
+
+	proxyURL, err := url.Parse("http://" + j.Proxy.Host + ":" + j.Proxy.Port + j.Context)
+	if err != nil {
+		return fmt.Errorf("Error when parsing proxy server url: %v", err)
+	}
+
+	if j.Proxy.Username != "" || j.Proxy.Password != "" {
+		proxyURL.User = url.UserPassword(j.Proxy.Username, j.Proxy.Password)
+	}
+
 	fields := make(common.MapStr)
 	for _, metric := range j.Metrics {
 		measurement := metric.Name
 
-		req, err := ego.prepareRequest(serverURL.String(), s, metric)
+		req, err := ego.prepareRequest(serverURL.String(), s, metric, j.Mode == "proxy", proxyURL.String())
 		if err != nil {
 			return err
 		}
@@ -118,7 +131,9 @@ func (ego *Jolokiabeat) doRequest(req *http.Request) (common.MapStr, error) {
 	return jsonOut, nil
 }
 
-func (ego *Jolokiabeat) prepareRequest(jolokiaURL string, server Server, metric Metric) (*http.Request, error) {
+func (ego *Jolokiabeat) prepareRequest(serverURL string, server Server, metric Metric, enableProxy bool, proxyURL string) (*http.Request, error) {
+	jolokiaURL := serverURL
+
 	bodyContent := common.MapStr{
 		"type":  "read",
 		"mbean": metric.Mbean,
@@ -129,6 +144,26 @@ func (ego *Jolokiabeat) prepareRequest(jolokiaURL string, server Server, metric 
 		if metric.Path != "" {
 			bodyContent["path"] = metric.Path
 		}
+	}
+
+	if enableProxy {
+		serviceURL := fmt.Sprintf("service:jmx:rmi:///jndi/rmi://%s:%s/jmxrmi", server.Host, server.Port)
+
+		target := common.MapStr{
+			"url": serviceURL,
+		}
+
+		if server.Username != "" {
+			target["user"] = server.Username
+		}
+
+		if server.Password != "" {
+			target["password"] = server.Password
+		}
+
+		bodyContent["target"] = target
+
+		jolokiaURL = proxyURL
 	}
 
 	requestBody, err := json.Marshal(bodyContent)
