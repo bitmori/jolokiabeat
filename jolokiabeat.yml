@@ -7,7 +7,7 @@ jolokiabeat:
   # period: 10s
   metric_under_root: true
   # metric_field_name: jolokia
-  config_dir: jolokiabeat.d
+  # config_dir: jolokiabeat.d
 
 #================================ General =====================================
 
