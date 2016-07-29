@@ -50,15 +50,22 @@ func (ego *Jolokiabeat) CollectData(j Jok, s Server) error {
 		} else {
 			if values, ok := out["value"]; ok {
 				switch t := values.(type) {
-				case common.MapStr:
+				case map[string]interface{}:
 					for k, v := range t {
-						fields[measurement+"_"+k] = v
+						switch t2 := v.(type) {
+						case map[string]interface{}:
+							for k2, v2 := range t2 {
+								fields[measurement+"_"+k+"_"+k2] = v2
+							}
+						case interface{}:
+							fields[measurement+"_"+k] = t2
+						}
 					}
 				case interface{}:
 					fields[measurement] = t
 				}
 			} else {
-				fmt.Println("Missing key 'value' in output response.")
+				fmt.Printf("Missing key 'value' in output response\n")
 			}
 		}
 	}

@@ -2,9 +2,12 @@ BEATNAME=jolokiabeat
 BEAT_DIR=github.com/neonmori
 SYSTEM_TESTS=false
 TEST_ENVIRONMENT=false
-ES_BEATS?=${GOPATH}/src/github.com/elastic/beats
+# ES_BEATS?=${GOPATH}/src/github.com/elastic/beats
+ES_BEATS=./vendor/github.com/elastic/beats
 GOPACKAGES=$(shell glide novendor)
 PREFIX?=.
+
+# ARCH=amd64 BEAT=jolokiabeat BUILDID=$(shell git rev-parse HEAD) SNAPSHOT=yes ./vendor/github.com/elastic/beats/dev-tools/packer/platforms/centos/build.sh
 
 # Path to the libbeat Makefile
 -include $(ES_BEATS)/libbeat/scripts/Makefile
